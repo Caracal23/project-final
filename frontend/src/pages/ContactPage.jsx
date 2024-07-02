@@ -1,4 +1,5 @@
 import styled from "styled-components"
+import { useEffect } from "react"
 import { FaGithub, FaLinkedin, FaGlobe } from "react-icons/fa"
 import EtnaImage from "/etna.jpeg"
 import AlmaImage from "/alma.png"
@@ -6,6 +7,10 @@ import { StyledContainer } from "../components/styled/LoginPage.styled.jsx"
 import { Background } from "../components/styled/Background.styled.jsx"
 
 export const ContactPage = () => {
+  useEffect(() => {
+    window.scrollTo({ top: 0 })
+  }, [])
+
   return (
     <StyledContainer>
       <Background bgColor="#dee0e2" />

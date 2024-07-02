@@ -1,7 +1,12 @@
 import styled from "styled-components"
+import { useEffect } from "react"
 import { Background } from "../components/styled/Background.styled"
 
 export const AboutPage = () => {
+  useEffect(() => {
+    window.scrollTo({ top: 0 })
+  }, [])
+
   return (
     <StyledAboutPage>
       <Background bgColor="#dee0e2" />

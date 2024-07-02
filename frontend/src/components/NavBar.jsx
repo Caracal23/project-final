@@ -9,13 +9,10 @@ export const NavBar = () => {
   const location = useLocation()
 
   const toggleMenu = () => {
-    
     setShowMenu(!showMenu)
   }
 
   const closeMenu = () => {
-    
-
     setShowMenu(false)
   }
 
@@ -84,7 +81,11 @@ export const NavBar = () => {
         </NavSectionLeft>
 
         <NavBarImageContainer>
-          <NavBarImage onClick={goToTop} src="icon4-white.png" alt="Museek Logo" />
+          <NavBarImage
+            onClick={goToTop}
+            src="icon4-white.png"
+            alt="Museek Logo"
+          />
         </NavBarImageContainer>
 
         <NavSectionRight>
