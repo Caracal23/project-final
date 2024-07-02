@@ -1,6 +1,8 @@
 import styled from "styled-components"
 import { useEffect, useState } from "react"
 import { Link } from "react-router-dom"
+import Lottie from "lottie-react"
+
 import { SearchBar } from "../components/SearchBar"
 import { MuseumCardContainer } from "../components/MuseumCardContainer"
 import { HeroSection } from "../components/HeroSection"
@@ -9,12 +11,13 @@ import { MuseumMap } from "../components/MuseumMap"
 import { StyledButton } from "../components/styled/Button.styled"
 import { Background } from "../components/styled/Background.styled"
 import { CTA } from "../components/CTA"
+import lottieDots from "../assets/lottie-dots.json"
 
 export const LandingPage = () => {
   const [museums, setMuseums] = useState([])
   const [results, setResults] = useState([])
   const [amountToShow, setAmountToShow] = useState(8)
-  const [isLoading, setIsLoading] = useState(true)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     window.scrollTo({ top: 0 })
@@ -23,16 +26,17 @@ export const LandingPage = () => {
   useEffect(() => {
     const fetchMuseums = async () => {
       try {
+        setLoading(true)
         const response = await fetch("https://museek-2ejb.onrender.com/museums")
         if (!response.ok) {
           throw new Error("Error fetching museums")
         }
         const data = await response.json()
         setMuseums(data)
-        setIsLoading(false)
       } catch (error) {
         console.error("There was an error fetching data:", error)
-        setIsLoading(false)
+      } finally {
+        setLoading(false)
       }
     }
 
@@ -48,30 +52,34 @@ export const LandingPage = () => {
 
         <HeroSection />
         <CTA />
-        <SearchBar setResults={setResults} />
 
-        {isLoading ? (
-          <LoadingContainer>
-            Searching for museums worldwide...
-          </LoadingContainer>
+        {loading ? (
+          <LottieContainer>
+            <Lottie aria-label="Loading animation" animationData={lottieDots} />
+          </LottieContainer>
         ) : (
-          <MuseumCardContainer
-            results={museumsToShow}
-            amountToShow={amountToShow}
-          />
+          <>
+            <SearchBar setResults={setResults} />
+            <MuseumCardContainer
+              results={museumsToShow}
+              amountToShow={amountToShow}
+            />
+            <ButtonContainer>
+              {" "}
+              <Link to="/museums">
+                <StyledButton aria-label="Discover more musuems">
+                  Discover more...
+                </StyledButton>
+              </Link>
+            </ButtonContainer>
+            <MuseumMap
+              museums={museumsToShow}
+              showLink={true}
+              center={[48.8566, 2.3522]}
+            />
+          </>
         )}
 
-        <ButtonContainer>
-          {" "}
-          <Link to="/museums">
-            <StyledButton aria-label="Discover more musuems">Discover more...</StyledButton>
-          </Link>
-        </ButtonContainer>
-        <MuseumMap
-          museums={museumsToShow}
-          showLink={true}
-          center={[48.8566, 2.3522]}
-        />
         <Newsletter />
       </LandingPageContainer>
     </div>
@@ -81,6 +89,7 @@ export const LandingPage = () => {
 const LandingPageContainer = styled.div`
   display: flex;
   flex-direction: column;
+  background-color: #222222;
 `
 const ButtonContainer = styled.div`
   display: flex;
@@ -88,10 +97,8 @@ const ButtonContainer = styled.div`
   background-color: #222222;
   padding: 30px 0 50px 0;
 `
-const LoadingContainer = styled.div`
-  font-size: 20px;
-  text-align: center;
-  padding-top: 20px;
+const LottieContainer = styled.div`
   background-color: #222222;
-  color: white;
+  max-width: 400px;
+  margin: 0 auto;
 `

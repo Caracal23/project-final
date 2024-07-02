@@ -51,7 +51,6 @@ const CarouselContainer = styled.div`
   position: absolute;
   top: 0;
   left: 0;
-  z-index: -2;
 `
 
 const StyledHero = styled.img`
